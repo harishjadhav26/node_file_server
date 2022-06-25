@@ -11,13 +11,13 @@ ADD app /usr/src/app/
 RUN ls /usr/src/app
 
 # Upgrade npm modules
-RUN npm install -g npm@8.5.1
+RUN npm install --location=global npm@8.5.1
 
 # Find extra packages
 RUN npm fund
 
 # Fix dependencies
-RUN npm audit fix
+#RUN npm audit fix
 
 # Install app modules
 RUN npm install
