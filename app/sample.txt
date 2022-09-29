@@ -1,2 +1,2 @@
 hello world poll 
-sample poll 9
+sample poll 1
