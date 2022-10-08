@@ -1,22 +1,30 @@
 pipeline {
-    agent { label "master" }
-    stages {
-        stage("Clean Work Space"){
-                    	steps{
-                    		cleanWs deleteDirs: true
-                    	}
+    agent none
+    
+    stages('master') {
+    	stage('sample_auto_Checkout') {
+    	        agent { 
+                    label "master"
+                }
+        	    steps{
+        	        script {
+                        properties([pipelineTriggers([pollSCM('')])])
                     }
-        stage('Checkout') {
-            steps {
-              checkout([$class: 'GitSCM', 
-                branches: [[name: 'dev']],
-                extensions: [
-                    [$class: 'SparseCheckoutPaths', 
-                    sparseCheckoutPaths:[[$class:'SparseCheckoutPath', path:'/app/harish/']]]
-                    ],
-                userRemoteConfigs: [[url: 'https://github.com/harishjadhav26/node_file_server.git']]])
-              sh "cd app/harish && ls -ltr"
-          }
-        }
+         	        //checkout([$class: 'GitSCM', branches: [[name: '*/${BRANCHNAME}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'githubacc', url: 'https://github.com/harishjadhav26/node_file_server.git']]]) 
+         	        git branch: '${BRANCHNAME}', url: 'https://github.com/harishjadhav26/node_file_server.git'
+        	    }
+    	}
+    	stage('sample_auto_Build') {
+    	    agent { 
+                label "master"
+            }
+    	    steps{
+     			// Shell build step
+                sh """ 
+                echo "Hello New code Update"
+                ls -ltrh 
+                 """    
+    	    }
+    	}
     }
 }
